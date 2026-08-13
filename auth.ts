@@ -19,6 +19,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const user = await prisma.user.findUnique({ where: { email } });
           if (!user || !user.passwordHash) return null;
 
+          if (!user.emailVerified) {
+            throw new Error("UNVERIFIED_EMAIL");
+          }
+
           const passwordsMatch = await bcrypt.compare(password, user.passwordHash);
           if (passwordsMatch) return user;
         }

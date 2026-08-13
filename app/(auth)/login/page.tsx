@@ -13,9 +13,12 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [unverifiedEmail, setUnverifiedEmail] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setUnverifiedEmail(false);
     setLoading(true);
 
     try {
@@ -26,7 +29,12 @@ export default function LoginPage() {
       });
 
       if (res?.error) {
-        setError("Invalid email or password");
+        if (res.error.includes("UNVERIFIED_EMAIL") || res.code === "UNVERIFIED_EMAIL") {
+          setError("Your account email is not verified yet.");
+          setUnverifiedEmail(true);
+        } else {
+          setError("Invalid email or password");
+        }
       } else {
         router.push("/dashboard");
         router.refresh();
@@ -50,8 +58,18 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm text-center">
-            {error}
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm text-center space-y-1">
+            <div>{error}</div>
+            {unverifiedEmail && (
+              <div>
+                <Link
+                  href={`/verify-code?email=${encodeURIComponent(email)}`}
+                  className="text-xs font-bold text-amber-400 hover:underline inline-block mt-1"
+                >
+                  Enter 6-digit verification code →
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
@@ -74,9 +92,17 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                Password
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-xs text-blue-400 hover:underline font-medium"
+              >
+                Forgot Password?
+              </Link>
+            </div>
             <div className="relative">
               <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input

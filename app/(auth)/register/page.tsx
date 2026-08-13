@@ -34,19 +34,7 @@ export default function RegisterPage() {
         return;
       }
 
-      // Auto sign-in on success
-      const signInRes = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (signInRes?.error) {
-        router.push("/login");
-      } else {
-        router.push("/dashboard");
-        router.refresh();
-      }
+      router.push(`/verify-code?email=${encodeURIComponent(email)}`);
     } catch (err: any) {
       setError("An unexpected error occurred");
     } finally {

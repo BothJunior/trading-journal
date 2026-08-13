@@ -107,10 +107,33 @@ export async function POST(req: Request) {
       },
     });
 
+    // Generate 6-digit verification code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes expiration
+
+    // Delete existing verification tokens for this email
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: email },
+    });
+
+    // Create new 6-digit verification token
+    await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token: code,
+        expires,
+      },
+    });
+
+    // Send verification email
+    const { sendVerificationCodeEmail } = await import("@/lib/email/sendAuthEmail");
+    await sendVerificationCodeEmail({ email, code });
+
     return NextResponse.json(
       {
-        message: "User registered successfully",
-        user: { id: user.id, email: user.email, name: user.name },
+        message: "Registration successful. Please verify your email with the 6-digit code sent to your inbox.",
+        requiresVerification: true,
+        email: user.email,
       },
       { status: 201 }
     );
