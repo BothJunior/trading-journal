@@ -160,15 +160,15 @@ export default function DashboardPage() {
   const currentEquity = startingEquity + totalPnL;
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
       {/* Top Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">Journal PnL</h1>
-          <p className="text-sm text-slate-400 mt-1">Simple PnL Overview & Equity Graph</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Journal PnL</h1>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">Simple PnL Overview & Equity Graph</p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           {/* Account Selector */}
           <select
             value={selectedAccountId}
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                 });
               }
             }}
-            className="bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 font-medium"
+            className="bg-slate-900 border border-slate-800 text-slate-200 text-xs sm:text-sm rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 focus:outline-none focus:border-amber-500 font-medium max-w-[180px] sm:max-w-none truncate"
           >
             {accounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -197,22 +197,23 @@ export default function DashboardPage() {
           <button
             onClick={openEditAccountModal}
             title="Edit Starting Equity & Account Details"
-            className="p-2.5 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all"
+            className="p-2 sm:p-2.5 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all"
           >
             <Settings className="w-4 h-4" />
           </button>
 
           <Link
             href="/dashboard/import"
-            className="flex items-center space-x-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-sm font-medium rounded-xl border border-slate-800 transition-all"
+            className="flex items-center space-x-1.5 sm:space-x-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs sm:text-sm font-medium rounded-xl border border-slate-800 transition-all"
           >
             <FileSpreadsheet className="w-4 h-4 text-amber-400" />
-            <span>Import CSV</span>
+            <span className="hidden xs:inline">Import</span>
+            <span className="xs:hidden sm:inline">CSV</span>
           </Link>
 
           <Link
             href="/dashboard/trades?new=true"
-            className="flex items-center space-x-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20"
+            className="flex items-center space-x-1.5 sm:space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs sm:text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20 ml-auto sm:ml-0"
           >
             <Plus className="w-4 h-4" />
             <span>Log Trade</span>
@@ -221,7 +222,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Hero PnL & Equity Card */}
-      <div className="glass-card rounded-3xl p-8 border border-slate-800 bg-gradient-to-br from-slate-900/80 via-slate-950 to-slate-900/80 shadow-2xl space-y-6">
+      <div className="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-slate-800 bg-gradient-to-br from-slate-900/80 via-slate-950 to-slate-900/80 shadow-2xl space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           {/* PnL & Total Equity Breakdown */}
           <div className="space-y-1">
@@ -230,19 +231,20 @@ export default function DashboardPage() {
               <span>Total Realized PnL</span>
             </div>
             <div
-              className={`text-5xl font-black font-mono tracking-tight ${isPositive ? "text-emerald-400" : "text-rose-400"
-                }`}
+              className={`text-3xl sm:text-5xl font-black font-mono tracking-tight ${
+                isPositive ? "text-emerald-400" : "text-rose-400"
+              }`}
             >
               {isPositive ? "+" : ""}${totalPnL.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </div>
-            <div className="text-xs text-slate-400 flex items-center space-x-3 pt-1">
+            <div className="text-xs text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1 pt-1">
               <span>Starting Equity: <strong className="text-slate-200 font-mono">${startingEquity.toLocaleString()}</strong></span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span>Current Balance: <strong className="text-amber-400 font-mono">${currentEquity.toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong></span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center sm:space-x-4">
             <div className="px-4 py-2 bg-slate-900/80 border border-slate-800 rounded-2xl text-center">
               <div className="text-xs text-slate-400 font-medium">Win Rate</div>
               <div className="text-lg font-bold text-amber-400 font-mono">

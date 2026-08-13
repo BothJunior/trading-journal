@@ -162,16 +162,16 @@ function TradesContent() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">Trading Journal</h1>
-          <p className="text-sm text-slate-400 mt-1">Detailed log of executed trades, fills, and tags</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Trading Journal</h1>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">Detailed log of executed trades, fills, and tags</p>
         </div>
 
         <button
           onClick={() => setShowLogModal(true)}
-          className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition-all shadow-lg shadow-blue-600/20"
+          className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition-all shadow-lg shadow-blue-600/20 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Log New Trade</span>
@@ -179,14 +179,14 @@ function TradesContent() {
       </div>
 
       {/* Filters Bar */}
-      <div className="glass-card rounded-xl p-4 border border-slate-800 flex flex-wrap items-center gap-4">
-        <div className="relative flex-1 min-w-[200px]">
+      <div className="glass-card rounded-xl p-4 border border-slate-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by ticker (e.g. AAPL, BTCUSDT)..."
+            placeholder="Search ticker (e.g. XAUUSD)..."
             className="w-full bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -331,9 +331,9 @@ function TradesContent() {
       {/* Manual Trade Log Modal */}
       {showLogModal && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-xl rounded-2xl p-6 border border-slate-800 space-y-6 max-h-[90vh] overflow-y-auto">
+          <div className="glass-card w-full max-w-xl rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-4 sm:space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h2 className="text-xl font-bold text-white">Log Trade Record</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-white">Log Trade Record</h2>
               <button
                 onClick={() => setShowLogModal(false)}
                 className="text-slate-400 hover:text-white"
@@ -343,7 +343,7 @@ function TradesContent() {
             </div>
 
             <form onSubmit={handleCreateTrade} className="space-y-4 text-sm">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Trading Account</label>
                   <select
@@ -368,7 +368,7 @@ function TradesContent() {
                       target="_blank"
                       className="text-[11px] text-amber-400 hover:underline font-semibold"
                     >
-                      Manage in Setup Matrix ↗
+                      Setup Matrix ↗
                     </Link>
                   </div>
                   <select
@@ -387,9 +387,9 @@ function TradesContent() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-1.5">
                   <label className="block text-xs text-slate-400">Asset Ticker</label>
-                  <div className="flex items-center space-x-1.5 text-[11px]">
+                  <div className="flex flex-wrap items-center gap-1 text-[11px]">
                     <span className="text-slate-500">Quick:</span>
                     {["XAUUSD", "EURUSD", "GBPUSD", "AUDUSD", "USDJPY"].map((t) => (
                       <button
@@ -408,7 +408,7 @@ function TradesContent() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   <div>
                     <input
                       type="text"
@@ -446,7 +446,7 @@ function TradesContent() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Entry Price</label>
                   <input

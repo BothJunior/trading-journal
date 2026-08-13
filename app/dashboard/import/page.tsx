@@ -65,15 +65,15 @@ export default function CSVImportPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
       <div className="border-b border-slate-800 pb-6">
         <div className="flex items-center space-x-3">
-          <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
-            <FileSpreadsheet className="w-8 h-8" />
+          <div className="p-2.5 sm:p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
+            <FileSpreadsheet className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">CSV Ingestion & Deduplication</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">CSV Ingestion & Deduplication</h1>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
               Import broker statements with automatic SHA256 execution hash deduplication
             </p>
           </div>

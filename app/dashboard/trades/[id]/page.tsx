@@ -95,10 +95,10 @@ export default function TradeDetailPage() {
   const isWin = trade.netPnL > 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           <button
             onClick={() => router.back()}
             className="p-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 rounded-xl transition-all"
@@ -107,7 +107,7 @@ export default function TradeDetailPage() {
           </button>
           <div>
             <div className="flex items-center space-x-3">
-              <h1 className="text-3xl font-bold text-white tracking-tight">{trade.ticker}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{trade.ticker}</h1>
               <span
                 className={`px-3 py-1 rounded-full text-xs font-bold ${
                   trade.direction === "LONG"
@@ -124,9 +124,9 @@ export default function TradeDetailPage() {
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="sm:text-right">
           <div className="text-xs text-slate-400 font-medium">Net Realized PnL</div>
-          <div className={`text-2xl font-bold font-mono ${isWin ? "text-emerald-400" : "text-rose-400"}`}>
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${isWin ? "text-emerald-400" : "text-rose-400"}`}>
             {isWin ? "+" : ""}${trade.netPnL.toFixed(2)}
           </div>
         </div>

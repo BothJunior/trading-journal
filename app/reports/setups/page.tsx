@@ -152,25 +152,25 @@ export default function SetupMatrixPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
       {/* Page Header */}
       <div className="border-b border-slate-800 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-3">
-          <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
-            <Grid className="w-8 h-8" />
+          <div className="p-2.5 sm:p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+            <Grid className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Playbook Strategy & Setup Matrix</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Playbook Strategy & Setup Matrix</h1>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
               Create, benchmark, and edit custom XAUUSD Gold playbooks & qualitative tags
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <button
             onClick={handleOpenCreateStrategy}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20"
+            className="flex items-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs sm:text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20"
           >
             <Plus className="w-4 h-4" />
             <span>Add Strategy</span>
@@ -178,7 +178,7 @@ export default function SetupMatrixPage() {
 
           <button
             onClick={handleOpenCreateTag}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-sm font-medium rounded-xl border border-slate-800 transition-all"
+            className="flex items-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs sm:text-sm font-medium rounded-xl border border-slate-800 transition-all"
           >
             <Plus className="w-4 h-4 text-amber-400" />
             <span>Add Setup Tag</span>
