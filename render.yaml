@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: personal-journal-trading
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx prisma generate && npx prisma db push && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: TURSO_DATABASE_URL
+        value: file:./prisma/dev.db

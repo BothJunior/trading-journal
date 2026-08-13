@@ -1,0 +1,201 @@
+datasource db {
+  provider     = "sqlite"
+  url          = env("TURSO_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model User {
+  id             String           @id @default(cuid())
+  name           String?
+  email          String           @unique
+  emailVerified  DateTime?
+  passwordHash   String?
+  image          String?
+  nativeCurrency String           @default("USD")
+  riskModel      String           @default("PERCENTAGE")
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  tradingAccounts TradingAccount[]
+  strategies     Strategy[]
+  trades         Trade[]
+  executions     Execution[]
+  tags           Tag[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model TradingAccount {
+  id             String   @id @default(cuid())
+  userId         String
+  name           String
+  broker         String   @default("Generic")
+  accountNumber  String?
+  currency       String   @default("USD")
+  initialBalance Float    @default(10000)
+  currentBalance Float    @default(10000)
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trades Trade[]
+
+  @@index([userId])
+}
+
+model Strategy {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  description   String?
+  rules         String?
+  targetWinRate Float?
+  targetRR      Float?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trades Trade[]
+
+  @@index([userId])
+}
+
+model Trade {
+  id               String   @id @default(cuid())
+  userId           String
+  tradingAccountId String
+  strategyId       String?
+  ticker           String
+  direction        String   // "LONG" | "SHORT"
+  assetClass       String   @default("EQUITY") // "FOREX" | "CRYPTO" | "EQUITY" | "FUTURES" | "OPTIONS"
+  status           String   @default("CLOSED") // "OPEN" | "CLOSED" | "CANCELLED"
+  entryDate        DateTime
+  exitDate         DateTime?
+  entryPrice       Float?
+  exitPrice        Float?
+  quantity         Float    @default(0)
+  stopLoss         Float?
+  takeProfit       Float?
+  initialRisk      Float    @default(0)
+  grossPnL         Float    @default(0)
+  netPnL           Float    @default(0)
+  totalFees        Float    @default(0)
+  realizedR        Float    @default(0)
+  mae              Float?
+  mfe              Float?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tradingAccount TradingAccount @relation(fields: [tradingAccountId], references: [id], onDelete: Cascade)
+  strategy       Strategy?      @relation(fields: [strategyId], references: [id], onDelete: SetNull)
+  executions     Execution[]
+  tradeTags      TradeTag[]
+
+  @@index([userId])
+  @@index([tradingAccountId])
+  @@index([strategyId])
+}
+
+model Execution {
+  id            String   @id @default(cuid())
+  tradeId       String
+  userId        String
+  timestamp     DateTime
+  action        String   // "BUY" | "SELL"
+  price         Float
+  quantity      Float
+  fee           Float    @default(0)
+  slippage      Float    @default(0)
+  executionHash String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trade Trade @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, executionHash])
+  @@index([tradeId])
+  @@index([userId])
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  color     String   @default("#3b82f6")
+  type      String   @default("MISTAKE") // "MISTAKE" | "SETUP" | "EMOTION"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tradeTags TradeTag[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model TradeTag {
+  id      String @id @default(cuid())
+  tradeId String
+  tagId   String
+
+  trade Trade @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tradeId, tagId])
+  @@index([tradeId])
+  @@index([tagId])
+}
