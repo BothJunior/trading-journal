@@ -2,11 +2,17 @@ import nodemailer from "nodemailer";
 
 function getTransporter() {
   const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || "587", 10);
+  const port = parseInt(process.env.SMTP_PORT || "465", 10);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
   if (host && user && pass) {
+    if (host.includes("gmail")) {
+      return nodemailer.createTransport({
+        service: "gmail",
+        auth: { user, pass },
+      });
+    }
     return nodemailer.createTransport({
       host,
       port,
@@ -14,6 +20,10 @@ function getTransporter() {
       auth: { user, pass },
     });
   }
+
+  console.warn(
+    "[SMTP WARNING] SMTP environment variables (SMTP_HOST, SMTP_USER, SMTP_PASS) are missing. Email dispatches are logged to server output."
+  );
   return null;
 }
 
