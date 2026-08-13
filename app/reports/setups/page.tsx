@@ -213,20 +213,20 @@ export default function SetupMatrixPage() {
             <table className="w-full text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Strategy Playbook</th>
-                  <th className="py-3 px-4">Trades</th>
-                  <th className="py-3 px-4">Win Rate</th>
-                  <th className="py-3 px-4">Expectancy ($)</th>
-                  <th className="py-3 px-4">Profit Factor</th>
-                  <th className="py-3 px-4">Avg Realized R</th>
-                  <th className="py-3 px-4">Net PnL</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Strategy Playbook</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Trades</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Win Rate</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Expectancy ($)</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Profit Factor</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Avg Realized R</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Net PnL</th>
+                  <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 {data.strategies.map((strat: any) => (
                   <tr key={strat.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-4 whitespace-nowrap">
                       <Link
                         href={`/dashboard/trades?strategyId=${strat.id}`}
                         className="font-bold text-white hover:text-amber-400 transition-colors"
@@ -239,30 +239,30 @@ export default function SetupMatrixPage() {
                         </div>
                       )}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300 font-mono">
+                    <td className="py-3.5 px-4 text-slate-300 font-mono whitespace-nowrap">
                       {strat.metrics.totalTrades}
                     </td>
-                    <td className="py-3.5 px-4 text-cyan-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-cyan-400 font-bold font-mono whitespace-nowrap">
                       {strat.metrics.winRate.toFixed(1)}%
                     </td>
-                    <td className="py-3.5 px-4 text-amber-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-amber-400 font-bold font-mono whitespace-nowrap">
                       ${strat.metrics.expectancy.toFixed(2)}
                     </td>
-                    <td className="py-3.5 px-4 text-emerald-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-emerald-400 font-bold font-mono whitespace-nowrap">
                       {strat.metrics.profitFactor.toFixed(2)}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300 font-mono">
+                    <td className="py-3.5 px-4 text-slate-300 font-mono whitespace-nowrap">
                       {strat.metrics.avgRealizedR.toFixed(2)}R
                     </td>
                     <td
-                      className={`py-3.5 px-4 font-bold font-mono ${
+                      className={`py-3.5 px-4 font-bold font-mono whitespace-nowrap ${
                         strat.metrics.totalNetPnL >= 0 ? "text-emerald-400" : "text-rose-400"
                       }`}
                     >
                       {strat.metrics.totalNetPnL >= 0 ? "+" : ""}$
                       {strat.metrics.totalNetPnL.toFixed(2)}
                     </td>
-                    <td className="py-3.5 px-4 text-right space-x-2">
+                    <td className="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
                       <button
                         onClick={() => handleOpenEditStrategy(strat)}
                         className="p-1 text-slate-400 hover:text-amber-400 transition-colors"
@@ -311,44 +311,44 @@ export default function SetupMatrixPage() {
             <table className="w-full text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Setup Tag</th>
-                  <th className="py-3 px-4">Trades</th>
-                  <th className="py-3 px-4">Win Rate</th>
-                  <th className="py-3 px-4">Expectancy ($)</th>
-                  <th className="py-3 px-4">Profit Factor</th>
-                  <th className="py-3 px-4">Net PnL</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Setup Tag</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Trades</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Win Rate</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Expectancy ($)</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Profit Factor</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Net PnL</th>
+                  <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 {data.setupTags.map((tag: any) => (
                   <tr key={tag.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-3.5 px-4 font-bold text-white">
+                    <td className="py-3.5 px-4 font-bold text-white whitespace-nowrap">
                       <span
                         style={{ backgroundColor: `${tag.color || "#f59e0b"}20`, color: tag.color || "#f59e0b" }}
-                        className="px-3 py-1 rounded-lg border border-current text-xs"
+                        className="inline-flex items-center whitespace-nowrap px-3 py-1 rounded-lg border border-current text-xs font-semibold"
                       >
                         {tag.name}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300 font-mono">{tag.metrics.totalTrades}</td>
-                    <td className="py-3.5 px-4 text-cyan-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-slate-300 font-mono whitespace-nowrap">{tag.metrics.totalTrades}</td>
+                    <td className="py-3.5 px-4 text-cyan-400 font-bold font-mono whitespace-nowrap">
                       {tag.metrics.winRate.toFixed(1)}%
                     </td>
-                    <td className="py-3.5 px-4 text-amber-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-amber-400 font-bold font-mono whitespace-nowrap">
                       ${tag.metrics.expectancy.toFixed(2)}
                     </td>
-                    <td className="py-3.5 px-4 text-emerald-400 font-bold font-mono">
+                    <td className="py-3.5 px-4 text-emerald-400 font-bold font-mono whitespace-nowrap">
                       {tag.metrics.profitFactor.toFixed(2)}
                     </td>
                     <td
-                      className={`py-3.5 px-4 font-bold font-mono ${
+                      className={`py-3.5 px-4 font-bold font-mono whitespace-nowrap ${
                         tag.metrics.totalNetPnL >= 0 ? "text-emerald-400" : "text-rose-400"
                       }`}
                     >
                       {tag.metrics.totalNetPnL >= 0 ? "+" : ""}${tag.metrics.totalNetPnL.toFixed(2)}
                     </td>
-                    <td className="py-3.5 px-4 text-right space-x-2">
+                    <td className="py-3.5 px-4 text-right space-x-2 whitespace-nowrap">
                       <button
                         onClick={() => handleOpenEditTag(tag)}
                         className="p-1 text-slate-400 hover:text-amber-400 transition-colors"

@@ -302,11 +302,11 @@ export default function DashboardPage() {
             <table className="w-full text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Ticker</th>
-                  <th className="py-3 px-4">Side</th>
-                  <th className="py-3 px-4">Entry / Exit</th>
-                  <th className="py-3 px-4">Net PnL</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Date</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Ticker</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Side</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Entry / Exit</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Net PnL</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
@@ -315,31 +315,33 @@ export default function DashboardPage() {
                   const isWin = t.netPnL > 0;
                   return (
                     <tr key={t.id} className="hover:bg-slate-900/40 transition-colors">
-                      <td className="py-3 px-4 text-slate-300 font-mono text-xs">
+                      <td className="py-3 px-4 text-slate-300 font-mono text-xs whitespace-nowrap">
                         {formatLocalDateTime(t.entryDate)}
                       </td>
-                      <td className="py-3 px-4 font-bold text-white">
+                      <td className="py-3 px-4 font-bold text-white whitespace-nowrap">
                         <Link href={`/dashboard/trades/${t.id}`} className="hover:text-amber-400">
                           {t.ticker}
                         </Link>
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3 px-4 whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${isLong
-                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                            }`}
+                          className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap ${
+                            isLong
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                          }`}
                         >
                           {isLong ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                           <span>{t.direction}</span>
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-slate-300 font-mono">
+                      <td className="py-3 px-4 text-slate-300 font-mono whitespace-nowrap">
                         ${t.entryPrice?.toFixed(2) || "-"} / ${t.exitPrice?.toFixed(2) || "-"}
                       </td>
                       <td
-                        className={`py-3 px-4 font-bold font-mono ${isWin ? "text-emerald-400" : t.netPnL < 0 ? "text-rose-400" : "text-slate-400"
-                          }`}
+                        className={`py-3 px-4 font-bold font-mono whitespace-nowrap ${
+                          isWin ? "text-emerald-400" : t.netPnL < 0 ? "text-rose-400" : "text-slate-400"
+                        }`}
                       >
                         {t.netPnL >= 0 ? "+" : ""}${t.netPnL.toFixed(2)}
                       </td>

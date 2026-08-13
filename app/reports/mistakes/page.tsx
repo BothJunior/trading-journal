@@ -75,31 +75,31 @@ export default function MistakeLeakagePage() {
             <table className="w-full text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Mistake Tag</th>
-                  <th className="py-3 px-4">Tagged Trades</th>
-                  <th className="py-3 px-4">Losing Trades</th>
-                  <th className="py-3 px-4">Total Loss ($)</th>
-                  <th className="py-3 px-4">Net Tag PnL</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Mistake Tag</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Tagged Trades</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Losing Trades</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Total Loss ($)</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Net Tag PnL</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 {data.mistakes.map((item: any) => (
                   <tr key={item.tagId} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-3.5 px-4 font-bold">
+                    <td className="py-3.5 px-4 font-bold whitespace-nowrap">
                       <span
                         style={{ backgroundColor: `${item.tagColor}20`, color: item.tagColor }}
-                        className="px-3 py-1 rounded-lg border border-current text-xs"
+                        className="inline-flex items-center whitespace-nowrap px-3 py-1 rounded-lg border border-current text-xs font-semibold"
                       >
                         {item.tagName}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300 font-mono">{item.tradeCount}</td>
-                    <td className="py-3.5 px-4 text-slate-300 font-mono">{item.mistakeCount}</td>
-                    <td className="py-3.5 px-4 font-bold text-rose-400 font-mono">
+                    <td className="py-3.5 px-4 text-slate-300 font-mono whitespace-nowrap">{item.tradeCount}</td>
+                    <td className="py-3.5 px-4 text-slate-300 font-mono whitespace-nowrap">{item.mistakeCount}</td>
+                    <td className="py-3.5 px-4 font-bold text-rose-400 font-mono whitespace-nowrap">
                       -${item.totalLoss.toFixed(2)}
                     </td>
                     <td
-                      className={`py-3.5 px-4 font-bold font-mono ${
+                      className={`py-3.5 px-4 font-bold font-mono whitespace-nowrap ${
                         item.totalNetPnL >= 0 ? "text-emerald-400" : "text-rose-400"
                       }`}
                     >

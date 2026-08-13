@@ -241,15 +241,15 @@ function TradesContent() {
             <table className="w-full text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-900/50 border-b border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Ticker</th>
-                  <th className="py-3 px-4">Side</th>
-                  <th className="py-3 px-4">Entry / Exit</th>
-                  <th className="py-3 px-4">Qty</th>
-                  <th className="py-3 px-4">Net PnL</th>
-                  <th className="py-3 px-4">Return R</th>
-                  <th className="py-3 px-4">Tags</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Date</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Ticker</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Side</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Entry / Exit</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Qty</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Net PnL</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Return R</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Tags</th>
+                  <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
@@ -258,17 +258,17 @@ function TradesContent() {
                   const isWin = t.netPnL > 0;
                   return (
                     <tr key={t.id} className="hover:bg-slate-900/40 transition-colors">
-                      <td className="py-3 px-4 text-slate-300 font-mono text-xs">
+                      <td className="py-3 px-4 text-slate-300 font-mono text-xs whitespace-nowrap">
                         {formatLocalDateTime(t.entryDate)}
                       </td>
-                      <td className="py-3 px-4 font-bold text-white">
+                      <td className="py-3 px-4 font-bold text-white whitespace-nowrap">
                         <Link href={`/dashboard/trades/${t.id}`} className="hover:text-blue-400">
                           {t.ticker}
                         </Link>
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3 px-4 whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                          className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap ${
                             isLong
                               ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                               : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
@@ -278,18 +278,18 @@ function TradesContent() {
                           <span>{t.direction}</span>
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-slate-300 font-mono">
+                      <td className="py-3 px-4 text-slate-300 font-mono whitespace-nowrap">
                         ${t.entryPrice?.toFixed(2) || "-"} / ${t.exitPrice?.toFixed(2) || "-"}
                       </td>
-                      <td className="py-3 px-4 text-slate-300">{t.quantity}</td>
+                      <td className="py-3 px-4 text-slate-300 font-mono whitespace-nowrap">{t.quantity}</td>
                       <td
-                        className={`py-3 px-4 font-bold font-mono ${
+                        className={`py-3 px-4 font-bold font-mono whitespace-nowrap ${
                           isWin ? "text-emerald-400" : t.netPnL < 0 ? "text-rose-400" : "text-slate-400"
                         }`}
                       >
                         {t.netPnL >= 0 ? "+" : ""}${t.netPnL.toFixed(2)}
                       </td>
-                      <td className="py-3 px-4 font-mono text-slate-300">
+                      <td className="py-3 px-4 font-mono text-slate-300 whitespace-nowrap">
                         {t.realizedR ? `${t.realizedR.toFixed(2)}R` : "-"}
                       </td>
                       <td className="py-3 px-4">
@@ -298,14 +298,14 @@ function TradesContent() {
                             <span
                               key={tt.tag.id}
                               style={{ backgroundColor: `${tt.tag.color}20`, color: tt.tag.color }}
-                              className="px-2 py-0.5 rounded text-[11px] font-semibold border border-current"
+                              className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded text-[11px] font-semibold border border-current"
                             >
                               {tt.tag.name}
                             </span>
                           ))}
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-right space-x-2">
+                      <td className="py-3 px-4 text-right space-x-2 whitespace-nowrap">
                         <Link
                           href={`/dashboard/trades/${t.id}`}
                           className="text-xs text-blue-400 hover:underline font-medium"
