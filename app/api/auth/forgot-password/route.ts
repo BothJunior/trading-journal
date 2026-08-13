@@ -31,6 +31,16 @@ export async function POST(req: Request) {
       const token = crypto.randomBytes(32).toString("hex");
       const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS "PasswordResetToken" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "email" TEXT NOT NULL,
+          "token" TEXT NOT NULL UNIQUE,
+          "expires" DATETIME NOT NULL,
+          "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+      `).catch(() => {});
+
       // Delete existing reset tokens
       await prisma.passwordResetToken.deleteMany({
         where: { email },

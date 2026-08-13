@@ -22,6 +22,16 @@ export async function POST(req: Request) {
 
     const { token, newPassword } = parsed.data;
 
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "PasswordResetToken" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "email" TEXT NOT NULL,
+        "token" TEXT NOT NULL UNIQUE,
+        "expires" DATETIME NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `).catch(() => {});
+
     const resetRecord = await prisma.passwordResetToken.findUnique({
       where: { token },
     });
