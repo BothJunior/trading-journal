@@ -1,6 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   providers: [],
   pages: {
     signIn: "/login",
@@ -39,5 +40,5 @@ export const authConfig: NextAuthConfig = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET || "super-secret-antigravity-trading-journal-jwt-key-32chars",
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "super-secret-antigravity-trading-journal-jwt-key-32chars",
 };
