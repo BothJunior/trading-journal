@@ -72,7 +72,10 @@ export default function Navbar() {
           </div>
 
           <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={async () => {
+              await signOut({ redirect: false });
+              window.location.href = "/login";
+            }}
             className="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-red-400 bg-slate-900 hover:bg-red-500/10 border border-slate-800 hover:border-red-500/30 px-3 py-1.5 rounded-lg transition-all"
           >
             <LogOut className="w-3.5 h-3.5" />
