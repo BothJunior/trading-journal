@@ -2,29 +2,94 @@ import nodemailer from "nodemailer";
 
 function getTransporter() {
   const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || "465", 10);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
   if (host && user && pass) {
-    if (host.includes("gmail")) {
-      return nodemailer.createTransport({
-        service: "gmail",
-        auth: { user, pass },
-      });
-    }
+    const port = parseInt(process.env.SMTP_PORT || "587", 10);
+    const isSecure = port === 465;
+
     return nodemailer.createTransport({
-      host,
+      host: host.includes("gmail") ? "smtp.gmail.com" : host,
       port,
-      secure: port === 465,
+      secure: isSecure,
+      requireTLS: !isSecure,
       auth: { user, pass },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
   }
 
-  console.warn(
-    "[SMTP WARNING] SMTP environment variables (SMTP_HOST, SMTP_USER, SMTP_PASS) are missing. Email dispatches are logged to server output."
-  );
   return null;
+}
+
+export async function sendEmail({
+  to,
+  subject,
+  html,
+}: {
+  to: string;
+  subject: string;
+  html: string;
+}) {
+  const from = process.env.EMAIL_FROM || '"Personal Journal" <onboarding@resend.dev>';
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  // 1. Try Resend HTTP API if configured
+  if (resendApiKey) {
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: from.includes("<") ? from : `"Personal Journal" <${from}>`,
+          to: [to],
+          subject,
+          html,
+        }),
+      });
+
+      if (res.ok) {
+        console.log(`[RESEND API SUCCESS] Email dispatched to ${to}`);
+        return true;
+      } else {
+        const errText = await res.text();
+        console.error(`[RESEND API ERROR] ${res.status}: ${errText}`);
+      }
+    } catch (err) {
+      console.error("[RESEND API FETCH ERROR]", err);
+    }
+  }
+
+  // 2. Try Nodemailer SMTP Transport
+  const transporter = getTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: from.includes("<") ? from : `"Personal Journal" <${from}>`,
+        to,
+        subject,
+        html,
+      });
+      console.log(`[SMTP SUCCESS] Email dispatched to ${to}`);
+      return true;
+    } catch (err: any) {
+      console.error("Failed to dispatch email via SMTP:", err?.message || err);
+    }
+  } else {
+    console.warn(
+      "[EMAIL WARNING] No active email provider (RESEND_API_KEY or SMTP_HOST/USER/PASS) configured."
+    );
+  }
+
+  return false;
 }
 
 export async function sendVerificationCodeEmail({
@@ -34,9 +99,6 @@ export async function sendVerificationCodeEmail({
   email: string;
   code: string;
 }) {
-  const from = process.env.EMAIL_FROM || '"Personal Journal" <noreply@trading-journal-k7rq.onrender.com>';
-  const transporter = getTransporter();
-
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px; background-color: #020617; color: #f8fafc; border-radius: 16px; border: 1px solid #1e293b;">
       <div style="text-align: center; margin-bottom: 24px;">
@@ -61,21 +123,14 @@ export async function sendVerificationCodeEmail({
   `;
 
   console.log(`\n==================================================`);
-  console.log(`[VERIFICATION CODE SENT] Email: ${email} | Code: ${code}`);
+  console.log(`[VERIFICATION CODE GENERATED] Email: ${email} | Code: ${code}`);
   console.log(`==================================================\n`);
 
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from,
-        to: email,
-        subject: `${code} is your Personal Journal verification code`,
-        html,
-      });
-    } catch (err) {
-      console.error("Failed to dispatch verification email via SMTP:", err);
-    }
-  }
+  await sendEmail({
+    to: email,
+    subject: `${code} is your Personal Journal verification code`,
+    html,
+  });
 }
 
 export async function sendPasswordResetEmail({
@@ -87,8 +142,6 @@ export async function sendPasswordResetEmail({
 }) {
   const baseUrl = process.env.NEXTAUTH_URL || "https://trading-journal-k7rq.onrender.com";
   const resetUrl = `${baseUrl}/reset-password?token=${token}`;
-  const from = process.env.EMAIL_FROM || '"Personal Journal" <noreply@trading-journal-k7rq.onrender.com>';
-  const transporter = getTransporter();
 
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px; background-color: #020617; color: #f8fafc; border-radius: 16px; border: 1px solid #1e293b;">
@@ -119,19 +172,12 @@ export async function sendPasswordResetEmail({
   `;
 
   console.log(`\n==================================================`);
-  console.log(`[PASSWORD RESET SENT] Email: ${email} | URL: ${resetUrl}`);
+  console.log(`[PASSWORD RESET GENERATED] Email: ${email} | URL: ${resetUrl}`);
   console.log(`==================================================\n`);
 
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from,
-        to: email,
-        subject: "Reset your Personal Journal password",
-        html,
-      });
-    } catch (err) {
-      console.error("Failed to dispatch password reset email via SMTP:", err);
-    }
-  }
+  await sendEmail({
+    to: email,
+    subject: "Reset your Personal Journal password",
+    html,
+  });
 }
